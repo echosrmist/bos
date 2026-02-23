@@ -11,18 +11,34 @@ import {
   Briefcase,
   Code,
   BookOpen,
-  Trophy,
   Heart,
   Star,
+  Cpu,
+  Zap,
+  Microscope,
+  Rocket,
+  Target,
+  Medal,
+  Banknote,
+  Building2,
+  IdCard
 } from 'lucide-react';
 
 const features = [
-  { icon: Briefcase, title: 'Internships', desc: 'Track all your work experience' },
-  { icon: Code, title: 'Projects', desc: 'Showcase technical projects' },
-  { icon: BookOpen, title: 'Research', desc: 'Papers, patents & publications' },
-  { icon: Trophy, title: 'Hackathons', desc: 'Competitions & wins' },
-  { icon: Heart, title: 'Volunteering', desc: 'Social service & impact' },
-  { icon: Star, title: 'Leadership', desc: 'Clubs, events & department' },
+  { icon: GraduationCap, title: 'Academic Record', desc: 'CGPA & consistent performance' },
+  { icon: Briefcase, title: 'Internships', desc: 'Corporate & industrial exposure' },
+  { icon: Code, title: 'Projects', desc: 'End-to-end technical deployments' },
+  { icon: Trophy, title: 'Hackathons', desc: 'Podium finishes & prototypes' },
+  { icon: Microscope, title: 'Research', desc: 'Publications & indexed journals' },
+  { icon: Award, title: 'Certifications', desc: 'Industry-recognized credentials' },
+  { icon: Rocket, title: 'Entrepreneurship', desc: 'Startups, funding & ventures' },
+  { icon: Target, title: 'Competitive Exams', desc: 'GATE, GRE, CAT scores & ranks' },
+  { icon: Medal, title: 'Sports & Cultural', desc: 'National & state level achievements' },
+  { icon: Heart, title: 'Volunteering', desc: 'NSS, NCC & social impact' },
+  { icon: Banknote, title: 'Scholarships', desc: 'Merit awards & sponsorships' },
+  { icon: Users, title: 'Clubs & Leadership', desc: 'Board roles & community building' },
+  { icon: Building2, title: 'Department', desc: 'Contributions to core ECE activities' },
+  { icon: IdCard, title: 'Memberships', desc: 'Professional technical societies' },
 ];
 
 const fadeUp = {
@@ -57,38 +73,46 @@ export default function HomePage() {
             }}
           />
 
-          <div style={{ maxWidth: '900px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-            {/* SRM Badge */}
+          <div style={{ maxWidth: '900px', textAlign: 'center', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {/* Dept & Club Badges */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(3, 77, 161, 0.06)',
-                border: '1px solid rgba(3, 77, 161, 0.15)',
-                borderRadius: '24px',
-                padding: '8px 20px',
-                marginBottom: '32px',
-                fontSize: '13px',
-                fontWeight: 600,
-                color: 'var(--srm-blue)',
+                display: 'flex',
+                gap: '12px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                marginBottom: '32px'
               }}
             >
-              <GraduationCap size={16} />
-              SRM Institute of Science and Technology
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                background: 'rgba(3, 77, 161, 0.06)', border: '1px solid rgba(3, 77, 161, 0.15)',
+                borderRadius: '24px', padding: '8px 20px', fontSize: '13px', fontWeight: 600, color: 'var(--srm-blue)'
+              }}>
+                <GraduationCap size={16} />
+                Department of ECE, SRM IST
+              </div>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                background: 'rgba(16, 185, 129, 0.06)', border: '1px solid rgba(16, 185, 129, 0.15)',
+                borderRadius: '24px', padding: '8px 20px', fontSize: '13px', fontWeight: 600, color: '#10B981'
+              }}>
+                <Zap size={16} />
+                Developed by ECHO Club
+              </div>
             </motion.div>
 
             {/* Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.1 }}
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: 'clamp(2rem, 6vw, 4.5rem)',
+                fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
                 fontWeight: 800,
                 lineHeight: 1.1,
                 marginBottom: '24px',
@@ -102,19 +126,18 @@ export default function HomePage() {
 
             {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               style={{
                 fontSize: 'clamp(1rem, 4vw, 18px)',
                 color: 'var(--text-secondary)',
-                maxWidth: '600px',
+                maxWidth: '650px',
                 margin: '0 auto 40px auto',
                 lineHeight: 1.7,
               }}
             >
-              Showcase your journey at SRM — every internship, project, research paper, and
-              leadership role. Let your achievements speak for you.
+              A fully automated evaluation platform engineered to transparently parse and algorithmicly rank engineering students based on 14 data-driven metrics. Submit your application to claim the title.
             </motion.p>
 
             {/* CTA Buttons */}
