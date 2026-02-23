@@ -218,7 +218,7 @@ export default function AdminClient({ students, fullStudents, error }: Props) {
         try {
             const updates = Array.from(changedRegNos).map(regNo => ({
                 regNo,
-                facultyScore: scoreOverrides[regNo],
+                facultyScore: scoreOverrides[regNo] ?? null, // Send null to indicate erasure if undefined
                 isVerified: !!verifiedStatus[regNo],
                 discardedItems: Array.from(discardedItems[regNo] || [])
             }));
@@ -273,11 +273,20 @@ export default function AdminClient({ students, fullStudents, error }: Props) {
     };
 
     const saveScore = (regNo: string) => {
-        const val = parseFloat(tempScore);
-        if (!isNaN(val) && val >= 0 && val <= 100) {
-            setScoreOverrides(prev => ({ ...prev, [regNo]: val }));
-            // Mark as changed
+        if (tempScore.trim() === '') {
+            // Revert to algorithmic score by removing the override
+            setScoreOverrides(prev => {
+                const next = { ...prev };
+                delete next[regNo];
+                return next;
+            });
             setChangedRegNos(prevChanged => new Set(prevChanged).add(regNo));
+        } else {
+            const val = parseFloat(tempScore);
+            if (!isNaN(val) && val >= 0 && val <= 100) {
+                setScoreOverrides(prev => ({ ...prev, [regNo]: val }));
+                setChangedRegNos(prevChanged => new Set(prevChanged).add(regNo));
+            }
         }
         setEditingScore(null);
     };

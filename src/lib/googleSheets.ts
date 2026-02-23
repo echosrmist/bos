@@ -687,9 +687,11 @@ export async function batchUpdateStudentEvaluations(
             if (!sheetRow) continue; // Skip if student not found
 
             if (update.facultyScore !== undefined) {
+                // If null, we want to erase it by passing an empty string
+                const writeValue = update.facultyScore === null ? '' : update.facultyScore.toString();
                 sheetUpdates.push({
                     range: `BO_Main!${scoreCol}${sheetRow}`,
-                    values: [[update.facultyScore.toString()]],
+                    values: [[writeValue]],
                 });
             }
 
