@@ -21,7 +21,8 @@ import {
   Medal,
   Banknote,
   Building2,
-  IdCard
+  IdCard,
+  Trophy
 } from 'lucide-react';
 
 const features = [
