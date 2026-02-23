@@ -686,17 +686,24 @@ export default function AdminClient({ students, fullStudents, error }: Props) {
                                                         {isExpanded && fullStudent && (
                                                             <tr>
                                                                 <td colSpan={9} style={{ padding: 0 }}>
-                                                                    <StudentDetailPanel
-                                                                        student={fullStudent}
-                                                                        regNo={student.registerNumber}
-                                                                        isDiscarded={isDiscarded}
-                                                                        toggleDiscard={toggleDiscard}
-                                                                        isVerified={isVerified}
-                                                                        setVerified={(v: boolean) => {
-                                                                            setVerifiedStatus(prev => ({ ...prev, [student.registerNumber]: v }));
-                                                                            setChangedRegNos(prev => new Set(prev).add(student.registerNumber));
-                                                                        }}
-                                                                    />
+                                                                    {(() => {
+                                                                        const currentDiscarded = Array.from(discardedItems[student.registerNumber] || []);
+                                                                        const dynamicScore = calculateScore(fullStudent, undefined, currentDiscarded);
+                                                                        return (
+                                                                            <StudentDetailPanel
+                                                                                student={fullStudent}
+                                                                                regNo={student.registerNumber}
+                                                                                isDiscarded={isDiscarded}
+                                                                                toggleDiscard={toggleDiscard}
+                                                                                isVerified={isVerified}
+                                                                                setVerified={(v: boolean) => {
+                                                                                    setVerifiedStatus(prev => ({ ...prev, [student.registerNumber]: v }));
+                                                                                    setChangedRegNos(prev => new Set(prev).add(student.registerNumber));
+                                                                                }}
+                                                                                breakdown={dynamicScore.breakdown}
+                                                                            />
+                                                                        );
+                                                                    })()}
                                                                 </td>
                                                             </tr>
                                                         )}
@@ -815,13 +822,14 @@ export default function AdminClient({ students, fullStudents, error }: Props) {
 
 
 // ===== STUDENT DETAIL PANEL =====
-function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVerified, setVerified }: {
+function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVerified, setVerified, breakdown }: {
     student: StudentApplication;
     regNo: string;
     isDiscarded: (regNo: string, section: string, itemId: string) => boolean;
     toggleDiscard: (regNo: string, section: string, itemId: string) => void;
     isVerified: boolean;
     setVerified: (v: boolean) => void;
+    breakdown?: Record<string, number>;
 }) {
     const pd = student.personalDetails;
     const ac = student.academicRecord;
@@ -897,7 +905,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
 
             {/* Academic Record */}
             <div style={sectionStyle}>
-                <h4 style={headingStyle}>📚 Academic Record</h4>
+                <h4 style={headingStyle}>
+                    📚 Academic Record
+                    <ScoreBadge score={breakdown?.cgpa} max={18} />
+                </h4>
                 <div style={gridStyle}>
                     <DetailField label="CGPA" value={ac.cgpa.toString()} />
                     <DetailField label="10th %" value={ac.tenthPercentage.toString()} />
@@ -923,7 +934,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Internships */}
             {student.internships.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>💼 Internships ({student.internships.length})</h4>
+                    <h4 style={headingStyle}>
+                        💼 Internships ({student.internships.length})
+                        <ScoreBadge score={breakdown?.internships} max={10} />
+                    </h4>
                     {student.internships.map((item, i) => {
                         const itemId = item.id || `int-${i}`;
                         const discarded = isDiscarded(regNo, 'internships', itemId);
@@ -945,7 +959,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Projects */}
             {student.projects.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🚀 Projects ({student.projects.length})</h4>
+                    <h4 style={headingStyle}>
+                        🚀 Projects ({student.projects.length})
+                        <ScoreBadge score={breakdown?.projects} max={10} />
+                    </h4>
                     {student.projects.map((item, i) => {
                         const itemId = item.id || `proj-${i}`;
                         const discarded = isDiscarded(regNo, 'projects', itemId);
@@ -967,7 +984,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Hackathons */}
             {student.hackathons.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>⚡ Hackathons ({student.hackathons.length})</h4>
+                    <h4 style={headingStyle}>
+                        ⚡ Hackathons ({student.hackathons.length})
+                        <ScoreBadge score={breakdown?.hackathons} max={8} />
+                    </h4>
                     {student.hackathons.map((item, i) => {
                         const itemId = item.id || `hack-${i}`;
                         const discarded = isDiscarded(regNo, 'hackathons', itemId);
@@ -989,7 +1009,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Research */}
             {student.research.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>📄 Research ({student.research.length})</h4>
+                    <h4 style={headingStyle}>
+                        📄 Research ({student.research.length})
+                        <ScoreBadge score={breakdown?.research} max={12} />
+                    </h4>
                     {student.research.map((item, i) => {
                         const itemId = item.id || `res-${i}`;
                         const discarded = isDiscarded(regNo, 'research', itemId);
@@ -1011,7 +1034,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Certifications */}
             {student.certifications.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🏅 Certifications ({student.certifications.length})</h4>
+                    <h4 style={headingStyle}>
+                        🏅 Certifications ({student.certifications.length})
+                        <ScoreBadge score={breakdown?.certifications} max={5} />
+                    </h4>
                     {student.certifications.map((item, i) => {
                         const itemId = item.id || `cert-${i}`;
                         const discarded = isDiscarded(regNo, 'certifications', itemId);
@@ -1032,7 +1058,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Entrepreneurship */}
             {student.entrepreneurship.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🏢 Entrepreneurship ({student.entrepreneurship.length})</h4>
+                    <h4 style={headingStyle}>
+                        🏢 Entrepreneurship ({student.entrepreneurship.length})
+                        <ScoreBadge score={breakdown?.entrepreneurship} max={8} />
+                    </h4>
                     {student.entrepreneurship.map((item, i) => {
                         const itemId = item.id || `ent-${i}`;
                         const discarded = isDiscarded(regNo, 'entrepreneurship', itemId);
@@ -1054,7 +1083,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Competitive Exams */}
             {student.competitiveExams.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>📝 Competitive Exams ({student.competitiveExams.length})</h4>
+                    <h4 style={headingStyle}>
+                        📝 Competitive Exams ({student.competitiveExams.length})
+                        <ScoreBadge score={breakdown?.competitiveExams} max={5} />
+                    </h4>
                     {student.competitiveExams.map((item, i) => {
                         const itemId = item.id || `exam-${i}`;
                         const discarded = isDiscarded(regNo, 'exams', itemId);
@@ -1074,7 +1106,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Sports/Cultural */}
             {student.sportsOrCultural.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🏆 Sports / Cultural ({student.sportsOrCultural.length})</h4>
+                    <h4 style={headingStyle}>
+                        🏆 Sports / Cultural ({student.sportsOrCultural.length})
+                        <ScoreBadge score={breakdown?.sportsOrCultural} max={5} />
+                    </h4>
                     {student.sportsOrCultural.map((item, i) => {
                         const itemId = item.id || `sport-${i}`;
                         const discarded = isDiscarded(regNo, 'sports', itemId);
@@ -1095,7 +1130,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Volunteering */}
             {student.volunteering.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🤝 Volunteering ({student.volunteering.length})</h4>
+                    <h4 style={headingStyle}>
+                        🤝 Volunteering ({student.volunteering.length})
+                        <ScoreBadge score={breakdown?.volunteering} max={5} />
+                    </h4>
                     {student.volunteering.map((item, i) => {
                         const itemId = item.id || `vol-${i}`;
                         const discarded = isDiscarded(regNo, 'volunteering', itemId);
@@ -1117,7 +1155,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Scholarships */}
             {student.scholarships.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🎓 Scholarships ({student.scholarships.length})</h4>
+                    <h4 style={headingStyle}>
+                        🎓 Scholarships ({student.scholarships.length})
+                        <ScoreBadge score={breakdown?.scholarships} max={4} />
+                    </h4>
                     {student.scholarships.map((item, i) => {
                         const itemId = item.id || `sch-${i}`;
                         const discarded = isDiscarded(regNo, 'scholarships', itemId);
@@ -1138,7 +1179,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Clubs */}
             {student.clubActivities.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🏛️ Clubs / Leadership ({student.clubActivities.length})</h4>
+                    <h4 style={headingStyle}>
+                        🏛️ Clubs / Leadership ({student.clubActivities.length})
+                        <ScoreBadge score={breakdown?.clubActivities} max={4} />
+                    </h4>
                     {student.clubActivities.map((item, i) => {
                         const itemId = item.id || `club-${i}`;
                         const discarded = isDiscarded(regNo, 'clubs', itemId);
@@ -1160,7 +1204,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Dept Contributions */}
             {student.departmentContributions.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🏫 Department Contributions ({student.departmentContributions.length})</h4>
+                    <h4 style={headingStyle}>
+                        🏫 Department Contributions ({student.departmentContributions.length})
+                        <ScoreBadge score={breakdown?.departmentContributions} max={2} />
+                    </h4>
                     {student.departmentContributions.map((item, i) => {
                         const itemId = item.id || `dept-${i}`;
                         const discarded = isDiscarded(regNo, 'deptContrib', itemId);
@@ -1181,7 +1228,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* Professional Memberships */}
             {student.professionalMemberships && student.professionalMemberships.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>🪪 Professional Memberships ({student.professionalMemberships.length})</h4>
+                    <h4 style={headingStyle}>
+                        🪪 Professional Memberships ({student.professionalMemberships.length})
+                        <ScoreBadge score={breakdown?.professionalMemberships} max={2} />
+                    </h4>
                     {student.professionalMemberships.map((item, i) => {
                         const itemId = item.id || `prof-${i}`;
                         const discarded = isDiscarded(regNo, 'profMembership', itemId);
@@ -1202,7 +1252,10 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
             {/* References */}
             {student.references.length > 0 && (
                 <div style={sectionStyle}>
-                    <h4 style={headingStyle}>👨‍🏫 References ({student.references.length})</h4>
+                    <h4 style={headingStyle}>
+                        👨‍🏫 References ({student.references.length})
+                        <ScoreBadge score={breakdown?.references} max={2} />
+                    </h4>
                     {student.references.map((item, i) => (
                         <div key={i} style={{ marginBottom: '8px', padding: '8px 12px', background: 'var(--bg-card)', borderRadius: 'var(--radius-sm)' }}>
                             <div style={gridStyle}>
@@ -1237,6 +1290,16 @@ function StudentDetailPanel({ student, regNo, isDiscarded, toggleDiscard, isVeri
                 </p>
             </div>
         </div>
+    );
+}
+
+// ===== SCORE BADGE =====
+function ScoreBadge({ score, max }: { score?: number; max: number }) {
+    if (score === undefined) return null;
+    return (
+        <span style={{ marginLeft: '12px', fontSize: '13px', fontWeight: 'normal', color: 'var(--text-muted)', backgroundColor: 'var(--bg-card)', padding: '2px 8px', borderRadius: '12px', border: '1px solid var(--border-subtle)', verticalAlign: 'middle' }}>
+            Score: <strong style={{ color: 'var(--accent-primary)' }}>{score}</strong> / {max}
+        </span>
     );
 }
 
