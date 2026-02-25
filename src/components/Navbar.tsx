@@ -61,15 +61,15 @@ export default function Navbar() {
                     </div>
                     <div style={{ minWidth: 0 }}> {/* Prevent shrinking below content */}
                         <div style={{
-                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontFamily: "'Playfair Display', serif",
                             fontWeight: 700,
-                            fontSize: 'clamp(14px, 4vw, 16px)',
-                            color: 'var(--text-primary)',
+                            fontSize: 'clamp(18px, 4vw, 22px)',
+                            color: '#8A1538',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis'
                         }}>
-                            Best Outgoing Student
+                            Gratulace 2026
                         </div>
                         <div className="hidden sm:block" style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
                             SRM IST KTR

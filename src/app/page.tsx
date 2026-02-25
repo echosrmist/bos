@@ -106,24 +106,28 @@ export default function HomePage() {
               </div>
             </motion.div>
 
-            {/* Title */}
-            <motion.h1
+            {/* Title Matrix */}
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-                fontWeight: 800,
-                lineHeight: 1.1,
-                marginBottom: '24px',
-                color: 'var(--text-primary)',
-              }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}
             >
-              Best Outgoing
-              <br />
-              <span className="gradient-text">Student Award</span>
-            </motion.h1>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Trophy size={80} strokeWidth={1} color="#8A1538" />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontWeight: 600, color: '#8A1538', lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0 }}>
+                    Gratulace
+                  </h1>
+                  <div style={{ fontFamily: "'Great Vibes', cursive", fontSize: 'clamp(4rem, 10vw, 7rem)', color: '#8A1538', lineHeight: 0.6, alignSelf: 'flex-end', paddingRight: '10px', marginTop: '10px' }}>
+                    2026
+                  </div>
+                </div>
+              </div>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', color: '#8A1538', marginTop: '20px', fontStyle: 'italic', letterSpacing: '0.02em' }}>
+                (Award Ceremony)
+              </div>
+            </motion.div>
 
             {/* Subtitle */}
             <motion.p
@@ -306,7 +310,7 @@ export default function HomePage() {
               {
                 step: '02',
                 title: 'Submit Your Video Pitch',
-                desc: 'Record a compelling video explaining why you deserve the Best Outgoing Student award.',
+                desc: 'Record a compelling video explaining why you deserve the Gratulace 2026 award.',
               },
               {
                 step: '03',
@@ -381,7 +385,7 @@ export default function HomePage() {
                 color: 'var(--text-primary)',
               }}
             >
-              Best Outgoing Student Portal
+              Gratulace 2026 Portal
             </span>
           </div>
           <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>

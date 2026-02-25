@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Best Outgoing Student | SRM IST KTR",
+  title: "Gratulace 2026 | SRM IST KTR",
   description:
-    "Best Outgoing Student Award Portal - SRM Institute of Science and Technology, Kattankulathur. Apply, showcase your achievements, and be recognized.",
-  keywords: ["SRM", "Best Outgoing Student", "SRM IST", "Kattankulathur", "Award"],
+    "Gratulace 2026 Award Portal - SRM Institute of Science and Technology, Kattankulathur. Apply, showcase your achievements, and be recognized.",
+  keywords: ["SRM", "Gratulace", "Gratulace 2026", "SRM IST", "Kattankulathur", "Award"],
   openGraph: {
-    title: "Best Outgoing Student | SRM IST KTR",
-    description: "Apply for the Best Outgoing Student Award at SRM IST KTR",
+    title: "Gratulace 2026 | SRM IST KTR",
+    description: "Apply for the Gratulace 2026 Award at SRM IST KTR",
     type: "website",
   },
 };
